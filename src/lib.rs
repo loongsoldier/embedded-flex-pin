@@ -123,7 +123,7 @@ pub trait FlexInputOutputPull: FlexInputOutput {
 }
 
 pub struct FlexAdapter<P> {
-    pin: P,
+    pub pin: P,
 }
 
 impl<P> FlexAdapter<P> {
