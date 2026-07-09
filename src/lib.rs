@@ -5,7 +5,6 @@
 //! See [`FlexPin`], [`FlexInputOutput`] and [`FlexInputOutputPull`] for the
 //! capability-layered trait hierarchy.
 
-use embedded_hal::digital::ErrorType;
 use embedded_hal::digital::InputPin;
 use embedded_hal::digital::OutputPin;
 use embedded_hal::digital::StatefulOutputPin;
@@ -120,56 +119,4 @@ pub trait FlexInputOutputPull: FlexInputOutput {
     ///
     /// Convenience variant of [`Self::set_as_input_output_no_pull()`] that takes no speed argument.
     fn set_as_input_output_no_pull_default_speed(&mut self);
-}
-
-pub struct FlexAdapter<P> {
-    pub pin: P,
-}
-
-impl<P> FlexAdapter<P> {
-    /// Wrap a pin in a `FlexAdapter`.
-    #[inline]
-    pub fn new(pin: P) -> Self {
-        Self { pin }
-    }
-}
-
-impl<P: ErrorType> ErrorType for FlexAdapter<P> {
-    type Error = P::Error;
-}
-
-impl<P: InputPin> InputPin for FlexAdapter<P> {
-    #[inline]
-    fn is_high(&mut self) -> Result<bool, Self::Error> {
-        self.pin.is_high()
-    }
-
-    #[inline]
-    fn is_low(&mut self) -> Result<bool, Self::Error> {
-        self.pin.is_low()
-    }
-}
-
-impl<P: OutputPin> OutputPin for FlexAdapter<P> {
-    #[inline]
-    fn set_high(&mut self) -> Result<(), Self::Error> {
-        self.pin.set_high()
-    }
-
-    #[inline]
-    fn set_low(&mut self) -> Result<(), Self::Error> {
-        self.pin.set_low()
-    }
-}
-
-impl<P: StatefulOutputPin> StatefulOutputPin for FlexAdapter<P> {
-    #[inline]
-    fn is_set_high(&mut self) -> Result<bool, Self::Error> {
-        self.pin.is_set_high()
-    }
-
-    #[inline]
-    fn is_set_low(&mut self) -> Result<bool, Self::Error> {
-        self.pin.is_set_low()
-    }
 }
